@@ -8,6 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Entity class representing a Part in the Product Lifecycle Management (PLM) system.
  *
@@ -17,6 +20,12 @@ import javax.persistence.ManyToOne;
 @Entity
 @IdClass(plm.model.Part.PartPK.class)
 public class Part {
+    /*
+     * Component provided by SLF4J that allows to log messages
+     * at different levels (e.g., info, debug, error).
+     */
+    private static final Logger logger = LoggerFactory.getLogger(Part.class);
+
     // Fields
 
     /*
@@ -192,6 +201,7 @@ public class Part {
      */
     public void setReservedBy(String reservedBy) {
         if (reservedBy == null || reservedBy.trim().isEmpty()) {
+            logger.error("Attempted to set invalid reservedBy: {}", reservedBy);
             throw new IllegalArgumentException("Reserved by cannot be blank");
         }
         this.reservedBy = reservedBy;
@@ -204,6 +214,7 @@ public class Part {
      */
     public void setPartAttribute1(String partAttribute1) {
         if (partAttribute1 == null || partAttribute1.trim().isEmpty()) {
+            logger.error("Attempted to set invalid partAttribute1: {}", partAttribute1);
             throw new IllegalArgumentException("Part attribute 1 cannot be blank");
         }
         this.partAttribute1 = partAttribute1;
@@ -216,6 +227,7 @@ public class Part {
      */
     public void setPartAttribute2(String partAttribute2) {
         if (partAttribute2 == null || partAttribute2.trim().isEmpty()) {
+            logger.error("Attempted to set invalid partAttribute2: {}", partAttribute2);
             throw new IllegalArgumentException("Part attribute 2 cannot be blank");
         }
         this.partAttribute2 = partAttribute2;
@@ -228,6 +240,7 @@ public class Part {
      */
     public void setLifeCycleTemplate(LifeCycleTemplate lifeCycleTemplate) {
         if (lifeCycleTemplate == null) {
+            logger.error("Attempted to set null lifecycleTemplate");
             throw new IllegalArgumentException("Lifecycle template cannot be null");
         }
         this.lifeCycleTemplate = lifeCycleTemplate;
@@ -240,6 +253,7 @@ public class Part {
      */
     public void setLifeCycleState(String lifeCycleState) {
         if (lifeCycleState == null || lifeCycleState.trim().isEmpty()) {
+            logger.error("Attempted to set invalid lifeCycleState: {}", lifeCycleState);
             throw new IllegalArgumentException("Lifecycle state cannot be blank");
         }
         this.lifeCycleState = lifeCycleState;
@@ -252,6 +266,7 @@ public class Part {
      */
     public void setVersionSchema(VersionSchema versionSchema) {
         if (versionSchema == null) {
+            logger.error("Attempted to set null versionSchema");
             throw new IllegalArgumentException("Version schema cannot be null");
         }
         this.versionSchema = versionSchema;
