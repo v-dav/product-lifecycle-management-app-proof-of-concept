@@ -191,6 +191,9 @@ public class Part {
      * @param reservedBy The user who reserved the part.
      */
     public void setReservedBy(String reservedBy) {
+        if (reservedBy == null || reservedBy.trim().isEmpty()) {
+            throw new IllegalArgumentException("Reserved by cannot be blank");
+        }
         this.reservedBy = reservedBy;
     }
 
@@ -200,6 +203,9 @@ public class Part {
      * @param partAttribute1 The new first part attribute.
      */
     public void setPartAttribute1(String partAttribute1) {
+        if (partAttribute1 == null || partAttribute1.trim().isEmpty()) {
+            throw new IllegalArgumentException("Part attribute 1 cannot be blank");
+        }
         this.partAttribute1 = partAttribute1;
     }
 
@@ -209,6 +215,9 @@ public class Part {
      * @param partAttribute2 The new second part attribute.
      */
     public void setPartAttribute2(String partAttribute2) {
+        if (partAttribute2 == null || partAttribute2.trim().isEmpty()) {
+            throw new IllegalArgumentException("Part attribute 2 cannot be blank");
+        }
         this.partAttribute2 = partAttribute2;
     }
 
@@ -218,6 +227,9 @@ public class Part {
      * @param lifeCycleTemplate The new lifecycle template.
      */
     public void setLifeCycleTemplate(LifeCycleTemplate lifeCycleTemplate) {
+        if (lifeCycleTemplate == null) {
+            throw new IllegalArgumentException("Lifecycle template cannot be null");
+        }
         this.lifeCycleTemplate = lifeCycleTemplate;
     }
 
@@ -227,6 +239,9 @@ public class Part {
      * @param lifeCycleState The new lifecycle state.
      */
     public void setLifeCycleState(String lifeCycleState) {
+        if (lifeCycleState == null || lifeCycleState.trim().isEmpty()) {
+            throw new IllegalArgumentException("Lifecycle state cannot be blank");
+        }
         this.lifeCycleState = lifeCycleState;
     }
 
@@ -236,6 +251,9 @@ public class Part {
      * @param versionSchema The new version schema.
      */
     public void setVersionSchema(VersionSchema versionSchema) {
+        if (versionSchema == null) {
+            throw new IllegalArgumentException("Version schema cannot be null");
+        }
         this.versionSchema = versionSchema;
     }
 
