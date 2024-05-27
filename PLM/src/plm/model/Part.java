@@ -8,8 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Min;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 /**
  * Entity class representing a Part in the Product Lifecycle Management (PLM) system.
@@ -34,15 +38,15 @@ public class Part {
      * @Min ensures it is a positive integer.
      */
     @Id
-    @NotBlank(message = "Reference cannot be empty");
+    @NotBlank(message = "Reference cannot be empty")
     private String reference;
 
     @Id
-    @NotBlank(message = "Version cannot be empty");
+    @NotBlank(message = "Version cannot be empty")
     private String version;
 
     @Id
-    @Min(value = 0, message = "Iteration must be a positive integer");
+    @Min(value = 0, message = "Iteration must be a positive integer")
     private int iteration;
 
     // @Column annotations specify that these fields should be mapped to columns in the database.
@@ -190,8 +194,9 @@ public class Part {
      *
      * @param reserved The new reserved status.
      */
-    public void setReserved(boolean reserved) {
+    public Part setReserved(boolean reserved) {
         this.reserved = reserved;
+        return this;
     }
 
     /**
@@ -199,12 +204,13 @@ public class Part {
      *
      * @param reservedBy The user who reserved the part.
      */
-    public void setReservedBy(String reservedBy) {
+    public Part setReservedBy(String reservedBy) {
         if (reservedBy == null || reservedBy.trim().isEmpty()) {
             logger.error("Attempted to set invalid reservedBy: {}", reservedBy);
             throw new IllegalArgumentException("Reserved by cannot be blank");
         }
         this.reservedBy = reservedBy;
+        return this;
     }
 
     /**
@@ -212,12 +218,13 @@ public class Part {
      *
      * @param partAttribute1 The new first part attribute.
      */
-    public void setPartAttribute1(String partAttribute1) {
+    public Part setPartAttribute1(String partAttribute1) {
         if (partAttribute1 == null || partAttribute1.trim().isEmpty()) {
             logger.error("Attempted to set invalid partAttribute1: {}", partAttribute1);
             throw new IllegalArgumentException("Part attribute 1 cannot be blank");
         }
         this.partAttribute1 = partAttribute1;
+        return this;
     }
 
     /**
@@ -225,12 +232,13 @@ public class Part {
      *
      * @param partAttribute2 The new second part attribute.
      */
-    public void setPartAttribute2(String partAttribute2) {
+    public Part setPartAttribute2(String partAttribute2) {
         if (partAttribute2 == null || partAttribute2.trim().isEmpty()) {
             logger.error("Attempted to set invalid partAttribute2: {}", partAttribute2);
             throw new IllegalArgumentException("Part attribute 2 cannot be blank");
         }
         this.partAttribute2 = partAttribute2;
+        return this;
     }
 
     /**
@@ -238,12 +246,13 @@ public class Part {
      *
      * @param lifeCycleTemplate The new lifecycle template.
      */
-    public void setLifeCycleTemplate(LifeCycleTemplate lifeCycleTemplate) {
+    public Part setLifeCycleTemplate(LifeCycleTemplate lifeCycleTemplate) {
         if (lifeCycleTemplate == null) {
             logger.error("Attempted to set null lifecycleTemplate");
             throw new IllegalArgumentException("Lifecycle template cannot be null");
         }
         this.lifeCycleTemplate = lifeCycleTemplate;
+        return this;
     }
 
     /**
@@ -251,12 +260,13 @@ public class Part {
      *
      * @param lifeCycleState The new lifecycle state.
      */
-    public void setLifeCycleState(String lifeCycleState) {
+    public Part setLifeCycleState(String lifeCycleState) {
         if (lifeCycleState == null || lifeCycleState.trim().isEmpty()) {
             logger.error("Attempted to set invalid lifeCycleState: {}", lifeCycleState);
             throw new IllegalArgumentException("Lifecycle state cannot be blank");
         }
         this.lifeCycleState = lifeCycleState;
+        return this;
     }
 
     /**
@@ -264,12 +274,13 @@ public class Part {
      *
      * @param versionSchema The new version schema.
      */
-    public void setVersionSchema(VersionSchema versionSchema) {
+    public Part setVersionSchema(VersionSchema versionSchema) {
         if (versionSchema == null) {
             logger.error("Attempted to set null versionSchema");
             throw new IllegalArgumentException("Version schema cannot be null");
         }
         this.versionSchema = versionSchema;
+        return this;
     }
 
     /**
