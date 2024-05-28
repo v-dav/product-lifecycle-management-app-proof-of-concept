@@ -1,38 +1,26 @@
 package plm.dao;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import plm.model.Part;
 
+/**
+ * Data Access Object (DAO) class for managing Part entities
+ * in the Product Lifecycle Management (PLM) system.
+ */
 @Repository
-@Transactional
-public class PartDao {
-	
-	@Autowired
-	private SessionFactory sessionFactory;
-	
+public class PartDao extends AbstractDao {
+
+	/**
+	 * Retrieves a Part entity based on its reference, version, and iteration.
+	 *
+	 * @param reference The reference of the part.
+	 * @param version The version of the part.
+	 * @param iteration The iteration of the part.
+	 * @return The Part entity.
+	 */
+	@Override
 	public Part get(String reference, String version, int iteration) {
-    	//
 		// Implementation and returned value are not relevant for this exercise
-    	//
 		return null;
 	}
-	
-	public void create(Part part) {
-		Session currentSession = sessionFactory.getCurrentSession();
-		currentSession.save(part);
-		currentSession.flush();
-	}
-
-	public void update(Part part) {
-		
-		Session currentSession = sessionFactory.getCurrentSession();
-		currentSession.update(part);
-		currentSession.flush();
-	}
-	
 }

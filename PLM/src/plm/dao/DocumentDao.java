@@ -1,39 +1,26 @@
 package plm.dao;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import plm.model.Document;
 
+/**
+ * Data Access Object (DAO) class for managing Document entities
+ * in the Product Lifecycle Management (PLM) system.
+ */
 @Repository
-@Transactional
-public class DocumentDao {
-	
-	@Autowired
-	private SessionFactory sessionFactory;
-	
+public class DocumentDao extends AbstractDao {
+
+	/**
+	 * Retrieves a Document entity based on its reference, version, and iteration.
+	 *
+	 * @param reference The reference of the document.
+	 * @param version The version of the document.
+	 * @param iteration The iteration of the document.
+	 * @return The Document entity.
+	 */
+	@Override
 	public Document get(String reference, String version, int iteration) {
-    	//
 		// Implementation and returned value are not relevant for this exercise
-    	//
 		return null;
 	}
-
-	public void update(Document document) {
-		
-		Session currentSession = sessionFactory.getCurrentSession();
-		currentSession.update(document);
-		currentSession.flush();
-	}
-
-	public void create(Document document) {
-		
-		Session currentSession = sessionFactory.getCurrentSession();
-		currentSession.save(document);
-		currentSession.flush();
-	}
-	
 }
