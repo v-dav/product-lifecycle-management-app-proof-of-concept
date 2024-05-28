@@ -3,7 +3,8 @@ package plm.model;
 import javax.persistence.Entity;
 
 /**
- * Entity class representing the lifecycle template in the Product Lifecycle Management (PLM) system.
+ * Entity class representing the lifecycle template
+ * in the Product Lifecycle Management (PLM) system.
  * This class is used to manage the lifecycle states of parts and documents.
  *
  * @Entity specifies that the class is an entity and is mapped to a database table.
