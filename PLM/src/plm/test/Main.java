@@ -23,9 +23,10 @@ public class Main {
             part.setReservedBy("user1")
                     .setLifeCycleTemplate(lifeCycleTemplate)
                     .setLifeCycleState("In Progress")
-                    .setVersionSchema(versionSchema)
-                    .setPartAttribute1("Attribute1")
-                    .setPartAttribute2("Attribute2");
+                    .setVersionSchema(versionSchema);
+
+            part.setPartAttribute1("Attribute1").setPartAttribute2("Attribute2");
+
             logger.info("Valid setters executed successfully");
         } catch (IllegalArgumentException e) {
             logger.error("Validation failed for valid setters: {}", e.getMessage());
