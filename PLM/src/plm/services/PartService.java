@@ -1,168 +1,199 @@
 package plm.services;
 
-import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import plm.dao.DocumentDao;
 import plm.dao.PartDao;
 import plm.model.Document;
 import plm.model.Part;
-import plm.util.Util;
+
+import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.Set;
 
 @Service
 public class PartService {
-	
-	@Autowired
-	private PartDao partDao;
 
-	@Autowired
-	private DocumentDao documentDao;
-	
-	private static Logger LOGGER = LoggerFactory.getLogger(PartService.class);
-	
-   public void reserve(String userId, String reference, String version, int iteration) {
-		
-    	Part part = partDao.get(reference, version, iteration);
-    	
-    	if (!part.isReserved() && !part.getLifeCycleTemplate().isFinal(part.getLifeCycleState())) {
+    @Autowired
+    private PartDao partDao;
 
-    		Part nextPartIteration = new Part(part.getReference(), part.getVersion(), iteration + 1);
-    		
-    		nextPartIteration.setReserved(true);
-    		nextPartIteration.setReservedBy(userId);
-    		
-    		nextPartIteration.setLifeCycleTemplate(part.getLifeCycleTemplate());
-    		nextPartIteration.setLifeCycleState(part.getLifeCycleState());
+    @Autowired
+    private DocumentDao documentDao;
 
-    		nextPartIteration.setVersionSchema(part.getVersionSchema());
-    		
-    		nextPartIteration.setPartAttribute1(part.getPartAttribute1());
-    		nextPartIteration.setPartAttribute2(part.getPartAttribute2());
-    		
-    		partDao.create(nextPartIteration);
-    		
-    		for (Document document : getLinkedDocuments(part)) {
-    			Document nextIteration = new Document(document.getReference(), document.getVersion(), iteration + 1);
-        		
-        		nextIteration.setReserved(true);
-        		nextIteration.setReservedBy(userId);
-        		
-        		nextIteration.setLifeCycleTemplate(document.getLifeCycleTemplate());
-        		nextIteration.setLifeCycleState(document.getLifeCycleState());
+    private static final Logger logger = LoggerFactory.getLogger(PartService.class);
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("messages", Locale.ENGLISH);
 
-        		nextIteration.setVersionSchema(document.getVersionSchema());
-        		
-        		nextIteration.setDocumentAttribute1(document.getDocumentAttribute1());
-        		nextIteration.setDocumentAttribute2(document.getDocumentAttribute2());
-        		
-        		documentDao.create(nextIteration);
-			}
-    	}
-	}
+    /**
+     * Reserves a Part entity and creates a new iteration.
+     *
+     * @param userId    The user ID making the request.
+     * @param reference The reference of the part.
+     * @param version   The version of the part.
+     * @param iteration The iteration of the part.
+     */
+    public void reserve(String userId, String reference, String version, int iteration) {
+        Part part = partDao.get(reference, version, iteration);
 
-	public void update(String userId, String reference, String version, int iteration, String partAttribute1, String partAttribute2) {
+        if (!part.isReserved() && !part.getLifeCycleTemplate().isFinal(part.getLifeCycleState())) {
+            Part nextPartIteration = new Part(part.getReference(), part.getVersion(), iteration + 1);
 
-    	Part part = partDao.get(reference, version, iteration);
-    	
-    	if (part.isReserved() && part.getReservedBy().equals(userId)) {
-    		
-    		part.setPartAttribute1(partAttribute1);
-    		part.setPartAttribute2(partAttribute2);
-    		
-    		partDao.update(part);
-    	}
-	}
+            nextPartIteration.setReserved(true)
+                    .setReservedBy(userId)
+                    .setLifeCycleTemplate(part.getLifeCycleTemplate())
+                    .setLifeCycleState(part.getLifeCycleState())
+                    .setVersionSchema(part.getVersionSchema())
+                    .setPartAttribute1(part.getPartAttribute1())
+                    .setPartAttribute2(part.getPartAttribute2());
 
-	public void free(String userId, String reference, String version, int iteration) {
-		
-    	Part part = partDao.get(reference, version, iteration);
-    	
-    	if (part.isReserved() && part.getReservedBy().equals(userId)) {
+            partDao.create(nextPartIteration);
 
-    		part.setReserved(false);
-    		part.setReservedBy(null);
+            for (Document document : getLinkedDocuments(part)) {
+                Document nextIteration = new Document(document.getReference(), document.getVersion(), iteration + 1);
 
-    		partDao.update(part);
-    		
-    		for (Document document : getLinkedDocuments(part)) {
-        		
-    			document.setReserved(false);
-    			document.setReservedBy(null);
-        		
-        		documentDao.update(document);
-			}
-    	}
-	}
+                nextIteration.setReserved(true)
+                        .setReservedBy(userId)
+                        .setLifeCycleTemplate(document.getLifeCycleTemplate())
+                        .setLifeCycleState(document.getLifeCycleState())
+                        .setVersionSchema(document.getVersionSchema())
+                        .setDocumentAttribute1(document.getDocumentAttribute1())
+                        .setDocumentAttribute2(document.getDocumentAttribute2());
 
-	public void setState(String userId, String reference, String version, int iteration, String state) {
-		
-    	Part part = partDao.get(reference, version, iteration);
-    	
-    	if (!part.isReserved() && part.getLifeCycleTemplate().isKnown(state)) {
-    		
-    		part.setLifeCycleState(state);
+                documentDao.create(nextIteration);
+            }
+        } else {
+            logger.error(bundle.getString("error.cannotReserve"));
+            throw new IllegalArgumentException(bundle.getString("error.cannotReserve"));
+        }
+    }
 
-    		partDao.update(part);
-    		
-    		for (Document document : getLinkedDocuments(part)) {
-        		
-    			document.setLifeCycleState(state);
-        		
-        		documentDao.update(document);
-			}
-    	}
-	}
+    /**
+     * Updates a Part entity's attributes if it is reserved by the given user.
+     *
+     * @param userId         The user ID making the request.
+     * @param reference      The reference of the part.
+     * @param version        The version of the part.
+     * @param iteration      The iteration of the part.
+     * @param partAttribute1 The first attribute of the part.
+     * @param partAttribute2 The second attribute of the part.
+     */
+    public void update(String userId, String reference, String version, int iteration, String partAttribute1, String partAttribute2) {
+        Part part = partDao.get(reference, version, iteration);
 
-	public void revise(String userId, String reference, String version, int iteration) {
-		
-    	Part part = partDao.get(reference, version, iteration);
-    	
-    	if (!part.isReserved() && part.getLifeCycleTemplate().isFinal(part.getLifeCycleState())) {
+        if (part.isReserved() && part.getReservedBy().equals(userId)) {
+            part.setPartAttribute1(partAttribute1)
+                    .setPartAttribute2(partAttribute2);
 
-    		Part nextPartVersion = new Part(part.getReference(), part.getVersionSchema().getNextVersionLabel(version), 1);
-    		
-    		nextPartVersion.setReserved(false);
-    		nextPartVersion.setReservedBy(null);
-    		
-    		nextPartVersion.setLifeCycleTemplate(part.getLifeCycleTemplate());
-    		nextPartVersion.setLifeCycleState(part.getLifeCycleTemplate().getInitialState());
+            partDao.update(part);
+        } else {
+            logger.error(bundle.getString("error.cannotUpdate"));
+            throw new IllegalArgumentException(bundle.getString("error.cannotUpdate"));
+        }
+    }
 
-    		nextPartVersion.setVersionSchema(part.getVersionSchema());
-    		
-    		nextPartVersion.setPartAttribute1(part.getPartAttribute1());
-    		nextPartVersion.setPartAttribute2(part.getPartAttribute2());
-    		
-    		partDao.create(nextPartVersion);
+    /**
+     * Frees a reserved Part entity and updates linked documents accordingly.
+     *
+     * @param userId    The user ID making the request.
+     * @param reference The reference of the part.
+     * @param version   The version of the part.
+     * @param iteration The iteration of the part.
+     */
+    public void free(String userId, String reference, String version, int iteration) {
+        Part part = partDao.get(reference, version, iteration);
 
-    		for (Document document : getLinkedDocuments(part)) {
-        		
-    			Document nextDocumentVersion = new Document(document.getReference(), document.getVersionSchema().getNextVersionLabel(version), 1);
-        		
-        		nextDocumentVersion.setReserved(false);
-        		nextDocumentVersion.setReservedBy(null);
-        		
-        		nextDocumentVersion.setLifeCycleTemplate(document.getLifeCycleTemplate());
-        		nextDocumentVersion.setLifeCycleState(document.getLifeCycleTemplate().getInitialState());
+        if (part.isReserved() && part.getReservedBy().equals(userId)) {
+            part.setReserved(false)
+                    .setReservedBy(null);
 
-        		nextDocumentVersion.setVersionSchema(document.getVersionSchema());
-        		
-        		nextDocumentVersion.setDocumentAttribute1(document.getDocumentAttribute1());
-        		nextDocumentVersion.setDocumentAttribute2(document.getDocumentAttribute2());
-        		
-        		documentDao.create(nextDocumentVersion);
-			}
-    	}
-	}
-	
-	
-	private Set<Document> getLinkedDocuments(Part part) {
-    	//
-		// Implementation and returned value are not relevant for this exercise
-    	//
-		return null;
-	}
+            partDao.update(part);
+
+            for (Document document : getLinkedDocuments(part)) {
+                document.setReserved(false)
+                        .setReservedBy(null);
+
+                documentDao.update(document);
+            }
+        } else {
+            logger.error(bundle.getString("error.cannotFree"));
+            throw new IllegalArgumentException(bundle.getString("error.cannotFree"));
+        }
+    }
+
+    /**
+     * Sets the state of a Part entity if it is not reserved.
+     *
+     * @param userId    The user ID making the request.
+     * @param reference The reference of the part.
+     * @param version   The version of the part.
+     * @param iteration The iteration of the part.
+     * @param state     The new state of the part.
+     */
+    public void setState(String userId, String reference, String version, int iteration, String state) {
+        Part part = partDao.get(reference, version, iteration);
+
+        if (!part.isReserved() && part.getLifeCycleTemplate().isKnown(state)) {
+            part.setLifeCycleState(state);
+
+            partDao.update(part);
+
+            for (Document document : getLinkedDocuments(part)) {
+                document.setLifeCycleState(state);
+
+                documentDao.update(document);
+            }
+        } else {
+            logger.error(bundle.getString("error.cannotSetState"));
+            throw new IllegalArgumentException(bundle.getString("error.cannotSetState"));
+        }
+    }
+
+    /**
+     * Revises a Part entity by creating a new version.
+     *
+     * @param userId    The user ID making the request.
+     * @param reference The reference of the part.
+     * @param version   The version of the part.
+     * @param iteration The iteration of the part.
+     */
+    public void revise(String userId, String reference, String version, int iteration) {
+        Part part = partDao.get(reference, version, iteration);
+
+        if (!part.isReserved() && part.getLifeCycleTemplate().isFinal(part.getLifeCycleState())) {
+            Part nextPartVersion = new Part(part.getReference(), part.getVersionSchema().getNextVersionLabel(version), 1);
+
+            nextPartVersion.setReserved(false)
+                    .setReservedBy(null)
+                    .setLifeCycleTemplate(part.getLifeCycleTemplate())
+                    .setLifeCycleState(part.getLifeCycleTemplate().getInitialState())
+                    .setVersionSchema(part.getVersionSchema())
+                    .setPartAttribute1(part.getPartAttribute1())
+                    .setPartAttribute2(part.getPartAttribute2());
+
+            partDao.create(nextPartVersion);
+
+            for (Document document : getLinkedDocuments(part)) {
+                Document nextDocumentVersion = new Document(document.getReference(), document.getVersionSchema().getNextVersionLabel(version), 1);
+
+                nextDocumentVersion.setReserved(false)
+                        .setReservedBy(null)
+                        .setLifeCycleTemplate(document.getLifeCycleTemplate())
+                        .setLifeCycleState(document.getLifeCycleTemplate().getInitialState())
+                        .setVersionSchema(document.getVersionSchema())
+                        .setDocumentAttribute1(document.getDocumentAttribute1())
+                        .setDocumentAttribute2(document.getDocumentAttribute2());
+
+                documentDao.create(nextDocumentVersion);
+            }
+        } else {
+            logger.error(bundle.getString("error.cannotRevise"));
+            throw new IllegalArgumentException(bundle.getString("error.cannotRevise"));
+        }
+    }
+
+    private Set<Document> getLinkedDocuments(Part part) {
+        // Implementation and returned value are not relevant for this exercise
+        return null;
+    }
 }
