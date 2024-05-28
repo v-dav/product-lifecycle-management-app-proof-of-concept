@@ -14,7 +14,6 @@ import javax.validation.constraints.Min;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * Entity class representing a Part in the Product Lifecycle Management (PLM) system.
  *
@@ -23,11 +22,8 @@ import org.slf4j.LoggerFactory;
  */
 @Entity
 @IdClass(plm.model.Part.PartPK.class)
-public class Part {
-    /*
-     * Component provided by SLF4J that allows to log messages
-     * at different levels (e.g., info, debug, error).
-     */
+public class Part extends AbstractEntity {
+
     private static final Logger logger = LoggerFactory.getLogger(Part.class);
 
     // Fields
@@ -49,29 +45,11 @@ public class Part {
     @Min(value = 0, message = "Iteration must be a positive integer")
     private int iteration;
 
-    // @Column annotations specify that these fields should be mapped to columns in the database.
-    @Column
-    private boolean reserved;
-
-    @Column
-    private String reservedBy;
-
     @Column
     private String partAttribute1;
 
     @Column
     private String partAttribute2;
-
-    @Column
-    private String lifeCycleState;
-
-    /* @ManyToOne indicate many-to-one relationships with
-     * LifeCycleTemplate and VersionSchema entities
-     */
-    @ManyToOne
-    private LifeCycleTemplate lifeCycleTemplate;
-    @ManyToOne
-    private VersionSchema versionSchema;
 
     // Constructors
 
@@ -125,24 +103,6 @@ public class Part {
     }
 
     /**
-     * Checks if the part is reserved.
-     *
-     * @return true if the part is reserved, false otherwise.
-     */
-    public boolean isReserved() {
-        return reserved;
-    }
-
-    /**
-     * Gets the user who reserved the part.
-     *
-     * @return The user who reserved the part.
-     */
-    public String getReservedBy() {
-        return reservedBy;
-    }
-
-    /**
      * Gets the first part attribute.
      *
      * @return The first part attribute.
@@ -160,58 +120,7 @@ public class Part {
         return partAttribute2;
     }
 
-    /**
-     * Gets the lifecycle state of the part.
-     *
-     * @return The lifecycle state of the part.
-     */
-    public String getLifeCycleState() {
-        return lifeCycleState;
-    }
-
-    /**
-     * Gets the lifecycle template of the part.
-     *
-     * @return The lifecycle template of the part.
-     */
-    public LifeCycleTemplate getLifeCycleTemplate() {
-        return lifeCycleTemplate;
-    }
-
-    /**
-     * Gets the version schema of the part.
-     *
-     * @return The version schema of the part.
-     */
-    public VersionSchema getVersionSchema() {
-        return versionSchema;
-    }
-
     // Setters
-
-    /**
-     * Sets the reserved status of the part.
-     *
-     * @param reserved The new reserved status.
-     */
-    public Part setReserved(boolean reserved) {
-        this.reserved = reserved;
-        return this;
-    }
-
-    /**
-     * Sets the user who reserved the part.
-     *
-     * @param reservedBy The user who reserved the part.
-     */
-    public Part setReservedBy(String reservedBy) {
-        if (reservedBy == null || reservedBy.trim().isEmpty()) {
-            logger.error("Attempted to set invalid reservedBy: {}", reservedBy);
-            throw new IllegalArgumentException("Reserved by cannot be blank");
-        }
-        this.reservedBy = reservedBy;
-        return this;
-    }
 
     /**
      * Sets the first part attribute.
@@ -238,48 +147,6 @@ public class Part {
             throw new IllegalArgumentException("Part attribute 2 cannot be blank");
         }
         this.partAttribute2 = partAttribute2;
-        return this;
-    }
-
-    /**
-     * Sets the lifecycle template of the part.
-     *
-     * @param lifeCycleTemplate The new lifecycle template.
-     */
-    public Part setLifeCycleTemplate(LifeCycleTemplate lifeCycleTemplate) {
-        if (lifeCycleTemplate == null) {
-            logger.error("Attempted to set null lifecycleTemplate");
-            throw new IllegalArgumentException("Lifecycle template cannot be null");
-        }
-        this.lifeCycleTemplate = lifeCycleTemplate;
-        return this;
-    }
-
-    /**
-     * Sets the lifecycle state of the part.
-     *
-     * @param lifeCycleState The new lifecycle state.
-     */
-    public Part setLifeCycleState(String lifeCycleState) {
-        if (lifeCycleState == null || lifeCycleState.trim().isEmpty()) {
-            logger.error("Attempted to set invalid lifeCycleState: {}", lifeCycleState);
-            throw new IllegalArgumentException("Lifecycle state cannot be blank");
-        }
-        this.lifeCycleState = lifeCycleState;
-        return this;
-    }
-
-    /**
-     * Sets the version schema of the part.
-     *
-     * @param versionSchema The new version schema.
-     */
-    public Part setVersionSchema(VersionSchema versionSchema) {
-        if (versionSchema == null) {
-            logger.error("Attempted to set null versionSchema");
-            throw new IllegalArgumentException("Version schema cannot be null");
-        }
-        this.versionSchema = versionSchema;
         return this;
     }
 
