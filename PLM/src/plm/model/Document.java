@@ -96,15 +96,11 @@ public class Document extends Part {
         return this;
     }
 
-    /**
-     * Composite primary key class for the Document entity.
-     */
+    // Composite primary key class for the Document entity.
     public static class DocumentPK extends Part.PartPK {
-        /**
-         * Default constructor for Java Persistance API.
-         */
+
+        // Default constructor for Java Persistance API
         public DocumentPK() {
-            // Default constructor
         }
 
         /**
