@@ -14,6 +14,7 @@ public class Main {
         LifeCycleTemplate lifeCycleTemplate = new LifeCycleTemplate();
         VersionSchema versionSchema = new VersionSchema();
 
+        System.out.println("-----------------------Testing the Part object methods-----------------------");
         // Create a Part object
         Part part = new Part("REF001", "1.0", 1);
 
