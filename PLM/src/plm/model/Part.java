@@ -53,9 +53,7 @@ public class Part extends AbstractEntity {
 
     // Constructors
 
-    /**
-     * Default constructor for Java Persistance API.
-     */
+    // Default constructor for Java Persistance API.
     public Part() {
         // Default constructor
     }
@@ -150,19 +148,14 @@ public class Part extends AbstractEntity {
         return this;
     }
 
-    /**
-     * Composite primary key class for the Part entity.
-     */
+    // Composite primary key class for the Part entity.
     public static class PartPK {
         private String reference;
         private String version;
         private int iteration;
 
-        /**
-         * Default constructor for Java Persistance API.
-         */
+        // Default constructor for Java Persistance API.
         public PartPK() {
-            // Default constructor
         }
 
         /**
@@ -176,6 +169,19 @@ public class Part extends AbstractEntity {
             this.reference = reference;
             this.version = version;
             this.iteration = iteration;
+        }
+
+        // Getter methods for the fields
+        public String getReference() {
+            return reference;
+        }
+
+        public String getVersion() {
+            return version;
+        }
+
+        public int getIteration() {
+            return iteration;
         }
 
         /**
