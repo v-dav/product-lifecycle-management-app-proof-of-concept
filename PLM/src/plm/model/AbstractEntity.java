@@ -40,26 +40,41 @@ public abstract class AbstractEntity implements Entity {
 
     // Getters
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isReserved() {
         return reserved;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getReservedBy() {
         return reservedBy;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LifeCycleTemplate getLifeCycleTemplate() {
         return lifeCycleTemplate;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getLifeCycleState() {
         return lifeCycleState;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VersionSchema getVersionSchema() {
         return versionSchema;
@@ -67,12 +82,18 @@ public abstract class AbstractEntity implements Entity {
 
     // Setters
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AbstractEntity setReserved(boolean reserved) {
         this.reserved = reserved;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AbstractEntity setReservedBy(String reservedBy) {
         if (reservedBy == null || reservedBy.trim().isEmpty()) {
@@ -83,6 +104,9 @@ public abstract class AbstractEntity implements Entity {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AbstractEntity setLifeCycleTemplate(LifeCycleTemplate lifeCycleTemplate) {
         if (lifeCycleTemplate == null) {
@@ -93,6 +117,9 @@ public abstract class AbstractEntity implements Entity {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AbstractEntity setLifeCycleState(String lifeCycleState) {
         if (lifeCycleState == null || lifeCycleState.trim().isEmpty()) {
@@ -103,6 +130,9 @@ public abstract class AbstractEntity implements Entity {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AbstractEntity setVersionSchema(VersionSchema versionSchema) {
         if (versionSchema == null) {
