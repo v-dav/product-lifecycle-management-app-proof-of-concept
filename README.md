@@ -4,7 +4,7 @@
 
 # Business
 - **Part:** represents a physical element or set of physical elements. For instance, a car (product) is composed, among others, of 4 wheels (4 occurrences of the Part "Wheel"). The wheel it self is composed by 1 wheel rim (1 occurrence of the Part "Rim"), 1 tyre (1 occurrence of the Part "Tyre") and X nuts (X occurrences of the Part "Nuts")
-
+  <br></br>
 - **Document:** represents the documentation (Studies, business requirements, tests, maintenance, ...). A Document can be linked to a Part, in such case both share the same life cycle template and all actions applied to the part is automatically applied to all linked documents 
 # Key Points
 
@@ -32,7 +32,7 @@
 
 **Industrialization.** In other words taking an existing POC Java codebase that serves as a prototype and **refactoring** it to be more modular, rich and maintainable while following specific guidelines.
 
-**Timeframe:** 72h
+**Timeframe:** 48h
 
 **Stack:**
 - Java (language)
