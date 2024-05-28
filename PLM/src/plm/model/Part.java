@@ -14,6 +14,9 @@ import javax.validation.constraints.Min;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 /**
  * Entity class representing a Part in the Product Lifecycle Management (PLM) system.
  *
@@ -25,6 +28,8 @@ import org.slf4j.LoggerFactory;
 public class Part extends AbstractEntity {
 
     private static final Logger logger = LoggerFactory.getLogger(Part.class);
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("messages",
+            Locale.ENGLISH);
 
     // Fields
 
@@ -127,8 +132,9 @@ public class Part extends AbstractEntity {
      */
     public Part setPartAttribute1(String partAttribute1) {
         if (partAttribute1 == null || partAttribute1.trim().isEmpty()) {
-            logger.error("Attempted to set invalid partAttribute1: {}", partAttribute1);
-            throw new IllegalArgumentException("Part attribute 1 cannot be blank");
+            logger.error(bundle.getString("error.invalidPartAttribute1"), partAttribute1);
+            throw new IllegalArgumentException(bundle.getString("partAttribute1") + " " +
+                    bundle.getString("error.cannotBeEmpty"));
         }
         this.partAttribute1 = partAttribute1;
         return this;
@@ -141,8 +147,9 @@ public class Part extends AbstractEntity {
      */
     public Part setPartAttribute2(String partAttribute2) {
         if (partAttribute2 == null || partAttribute2.trim().isEmpty()) {
-            logger.error("Attempted to set invalid partAttribute2: {}", partAttribute2);
-            throw new IllegalArgumentException("Part attribute 2 cannot be blank");
+            logger.error(bundle.getString("error.invalidPartAttribute2"), partAttribute2);
+            throw new IllegalArgumentException(bundle.getString("partAttribute2") + " " +
+                    bundle.getString("error.cannotBeEmpty"));
         }
         this.partAttribute2 = partAttribute2;
         return this;

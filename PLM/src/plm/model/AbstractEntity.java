@@ -2,11 +2,17 @@ package plm.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+
 /**
  * Abstract Entity class providing common implementation for PLM system entities.
+ *
  * @MappedSuperclass indicates that it is a base class for JPA entities.
  */
 @MappedSuperclass
@@ -16,6 +22,10 @@ public abstract class AbstractEntity implements Entity {
      * at different levels (e.g., info, debug, error).
      */
     private static final Logger logger = LoggerFactory.getLogger(AbstractEntity.class);
+
+    //  Initializes the resource bundle based on the default locale.
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("messages",
+            Locale.ENGLISH);
 
     // Fields
 
@@ -97,8 +107,9 @@ public abstract class AbstractEntity implements Entity {
     @Override
     public AbstractEntity setReservedBy(String reservedBy) {
         if (reservedBy == null || reservedBy.trim().isEmpty()) {
-            logger.error("Attempted to set invalid reservedBy: {}", reservedBy);
-            throw new IllegalArgumentException("Reserved by cannot be blank");
+            logger.error(bundle.getString("error.invalidReservedBy"), reservedBy);
+            throw new IllegalArgumentException(bundle.getString("reservedBy") + " " +
+                    bundle.getString("error.cannotBeBlank"));
         }
         this.reservedBy = reservedBy;
         return this;
@@ -110,8 +121,9 @@ public abstract class AbstractEntity implements Entity {
     @Override
     public AbstractEntity setLifeCycleTemplate(LifeCycleTemplate lifeCycleTemplate) {
         if (lifeCycleTemplate == null) {
-            logger.error("Attempted to set null lifecycleTemplate");
-            throw new IllegalArgumentException("Lifecycle template cannot be null");
+            logger.error(bundle.getString("error.nullLifeCycleTemplate"));
+            throw new IllegalArgumentException(bundle.getString("lifeCycleTemplate") + " " +
+                    bundle.getString("error.cannotBeNull"));
         }
         this.lifeCycleTemplate = lifeCycleTemplate;
         return this;
@@ -123,8 +135,9 @@ public abstract class AbstractEntity implements Entity {
     @Override
     public AbstractEntity setLifeCycleState(String lifeCycleState) {
         if (lifeCycleState == null || lifeCycleState.trim().isEmpty()) {
-            logger.error("Attempted to set invalid lifeCycleState: {}", lifeCycleState);
-            throw new IllegalArgumentException("Lifecycle state cannot be blank");
+            logger.error(bundle.getString("error.invalidLifeCycleState"), lifeCycleState);
+            throw new IllegalArgumentException(bundle.getString("lifeCycleState") + " " +
+                    bundle.getString("error.cannotBeBlank"));
         }
         this.lifeCycleState = lifeCycleState;
         return this;
@@ -136,8 +149,9 @@ public abstract class AbstractEntity implements Entity {
     @Override
     public AbstractEntity setVersionSchema(VersionSchema versionSchema) {
         if (versionSchema == null) {
-            logger.error("Attempted to set null versionSchema");
-            throw new IllegalArgumentException("Version schema cannot be null");
+            logger.error(bundle.getString("error.nullVersionSchema"));
+            throw new IllegalArgumentException(bundle.getString("versionSchema") + " " +
+                    bundle.getString("error.cannotBeNull"));
         }
         this.versionSchema = versionSchema;
         return this;

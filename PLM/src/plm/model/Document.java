@@ -9,6 +9,9 @@ import javax.persistence.IdClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 /**
  * Entity class representing a Document in the Product Lifecycle Management (PLM) system.
  */
@@ -17,6 +20,8 @@ import org.slf4j.LoggerFactory;
 public class Document extends Part {
 
     private static final Logger logger = LoggerFactory.getLogger(Document.class);
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("messages",
+            Locale.ENGLISH);
 
     @Column
     private String documentAttribute1;
@@ -74,8 +79,9 @@ public class Document extends Part {
      */
     public Document setDocumentAttribute1(String documentAttribute1) {
         if (documentAttribute1 == null || documentAttribute1.trim().isEmpty()) {
-            logger.error("Attempted to set invalid documentAttribute1: {}", documentAttribute1);
-            throw new IllegalArgumentException("Document attribute 1 cannot be blank");
+            logger.error(bundle.getString("error.invalidDocumentAttribute1"), documentAttribute1);
+            throw new IllegalArgumentException(bundle.getString("document.attribute1") + " " +
+                    bundle.getString("error.cannotBeBlank"));
         }
         this.documentAttribute1 = documentAttribute1;
         return this;
@@ -89,8 +95,9 @@ public class Document extends Part {
      */
     public Document setDocumentAttribute2(String documentAttribute2) {
         if (documentAttribute2 == null || documentAttribute2.trim().isEmpty()) {
-            logger.error("Attempted to set invalid documentAttribute2: {}", documentAttribute2);
-            throw new IllegalArgumentException("Document attribute 2 cannot be blank");
+            logger.error(bundle.getString("error.invalidDocumentAttribute2"), documentAttribute2);
+            throw new IllegalArgumentException(bundle.getString("document.attribute2") + " " +
+                    bundle.getString("error.cannotBeBlank"));
         }
         this.documentAttribute2 = documentAttribute2;
         return this;
