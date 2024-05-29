@@ -12,7 +12,8 @@ import java.util.ResourceBundle;
 
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
-    private static final ResourceBundle bundle = ResourceBundle.getBundle("messages", Locale.ENGLISH);
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("messages",
+            Locale.ENGLISH);
 
     public static void main(String[] args) {
         // Create instances of dependent objects
