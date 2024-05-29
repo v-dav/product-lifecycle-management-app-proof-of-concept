@@ -111,15 +111,11 @@ public class PartService {
         Part part = partDao.get(reference, version, iteration);
 
         if (part.isReserved() && part.getReservedBy().equals(userId)) {
-            part.setReserved(false)
-                    .setReservedBy(null);
-
+            part.setReserved(false).setReservedBy(null);
             partDao.update(part);
 
             for (Document document : getLinkedDocuments(part)) {
-                document.setReserved(false)
-                        .setReservedBy(null);
-
+                document.setReserved(false).setReservedBy(null);
                 documentDao.update(document);
             }
         } else {
@@ -143,12 +139,10 @@ public class PartService {
 
         if (!part.isReserved() && part.getLifeCycleTemplate().isKnown(state)) {
             part.setLifeCycleState(state);
-
             partDao.update(part);
 
             for (Document document : getLinkedDocuments(part)) {
                 document.setLifeCycleState(state);
-
                 documentDao.update(document);
             }
         } else {
@@ -176,7 +170,9 @@ public class PartService {
                     .setReservedBy(null)
                     .setLifeCycleTemplate(part.getLifeCycleTemplate())
                     .setLifeCycleState(part.getLifeCycleTemplate().getInitialState())
-                    .setVersionSchema(part.getVersionSchema())
+                    .setVersionSchema(part.getVersionSchema());
+
+            nextPartVersion
                     .setPartAttribute1(part.getPartAttribute1())
                     .setPartAttribute2(part.getPartAttribute2());
 
@@ -190,7 +186,9 @@ public class PartService {
                         .setReservedBy(null)
                         .setLifeCycleTemplate(document.getLifeCycleTemplate())
                         .setLifeCycleState(document.getLifeCycleTemplate().getInitialState())
-                        .setVersionSchema(document.getVersionSchema())
+                        .setVersionSchema(document.getVersionSchema());
+
+                nextDocumentVersion
                         .setDocumentAttribute1(document.getDocumentAttribute1())
                         .setDocumentAttribute2(document.getDocumentAttribute2());
 

@@ -40,7 +40,9 @@ public class DocumentService {
                     .setReservedBy(userId)
                     .setLifeCycleTemplate(document.getLifeCycleTemplate())
                     .setLifeCycleState(document.getLifeCycleState())
-                    .setVersionSchema(document.getVersionSchema())
+                    .setVersionSchema(document.getVersionSchema());
+
+            nextDocumentIteration
                     .setDocumentAttribute1(document.getDocumentAttribute1())
                     .setDocumentAttribute2(document.getDocumentAttribute2());
 
@@ -88,9 +90,7 @@ public class DocumentService {
         Document document = documentDao.get(reference, version, iteration);
 
         if (document.isReserved() && document.getReservedBy().equals(userId)) {
-            document.setReserved(false)
-                    .setReservedBy(null);
-
+            document.setReserved(false).setReservedBy(null);
             documentDao.update(document);
         } else {
             logger.error(bundle.getString("error.DocumentCannotFree"));
@@ -113,7 +113,6 @@ public class DocumentService {
 
         if (!document.isReserved() && document.getLifeCycleTemplate().isKnown(state)) {
             document.setLifeCycleState(state);
-
             documentDao.update(document);
         } else {
             logger.error(bundle.getString("error.DocumentCannotSetState"));
@@ -141,7 +140,9 @@ public class DocumentService {
                     .setReservedBy(null)
                     .setLifeCycleTemplate(document.getLifeCycleTemplate())
                     .setLifeCycleState(document.getLifeCycleTemplate().getInitialState())
-                    .setVersionSchema(document.getVersionSchema())
+                    .setVersionSchema(document.getVersionSchema());
+
+            nextDocumentVersion
                     .setDocumentAttribute1(document.getDocumentAttribute1())
                     .setDocumentAttribute2(document.getDocumentAttribute2());
 
