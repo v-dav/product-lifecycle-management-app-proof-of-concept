@@ -45,7 +45,9 @@ public class PartService {
                     .setReservedBy(userId)
                     .setLifeCycleTemplate(part.getLifeCycleTemplate())
                     .setLifeCycleState(part.getLifeCycleState())
-                    .setVersionSchema(part.getVersionSchema())
+                    .setVersionSchema(part.getVersionSchema());
+
+            nextPartIteration
                     .setPartAttribute1(part.getPartAttribute1())
                     .setPartAttribute2(part.getPartAttribute2());
 
@@ -59,15 +61,17 @@ public class PartService {
                         .setReservedBy(userId)
                         .setLifeCycleTemplate(document.getLifeCycleTemplate())
                         .setLifeCycleState(document.getLifeCycleState())
-                        .setVersionSchema(document.getVersionSchema())
+                        .setVersionSchema(document.getVersionSchema());
+
+                nextIteration
                         .setDocumentAttribute1(document.getDocumentAttribute1())
                         .setDocumentAttribute2(document.getDocumentAttribute2());
 
                 documentDao.create(nextIteration);
             }
         } else {
-            logger.error(bundle.getString("error.cannotReserve"));
-            throw new IllegalArgumentException(bundle.getString("error.cannotReserve"));
+            logger.error(bundle.getString("error.PartCannotReserve"));
+            throw new IllegalArgumentException(bundle.getString("error.PartCannotReserve"));
         }
     }
 
@@ -90,8 +94,8 @@ public class PartService {
 
             partDao.update(part);
         } else {
-            logger.error(bundle.getString("error.cannotUpdate"));
-            throw new IllegalArgumentException(bundle.getString("error.cannotUpdate"));
+            logger.error(bundle.getString("error.PartCannotUpdate"));
+            throw new IllegalArgumentException(bundle.getString("error.PartCannotUpdate"));
         }
     }
 
@@ -119,8 +123,8 @@ public class PartService {
                 documentDao.update(document);
             }
         } else {
-            logger.error(bundle.getString("error.cannotFree"));
-            throw new IllegalArgumentException(bundle.getString("error.cannotFree"));
+            logger.error(bundle.getString("error.PartCannotFree"));
+            throw new IllegalArgumentException(bundle.getString("error.PartCannotFree"));
         }
     }
 
@@ -148,8 +152,8 @@ public class PartService {
                 documentDao.update(document);
             }
         } else {
-            logger.error(bundle.getString("error.cannotSetState"));
-            throw new IllegalArgumentException(bundle.getString("error.cannotSetState"));
+            logger.error(bundle.getString("error.PartCannotSetState"));
+            throw new IllegalArgumentException(bundle.getString("error.PartCannotSetState"));
         }
     }
 
@@ -193,8 +197,8 @@ public class PartService {
                 documentDao.create(nextDocumentVersion);
             }
         } else {
-            logger.error(bundle.getString("error.cannotRevise"));
-            throw new IllegalArgumentException(bundle.getString("error.cannotRevise"));
+            logger.error(bundle.getString("error.PartCannotRevise"));
+            throw new IllegalArgumentException(bundle.getString("error.PartCannotRevise"));
         }
     }
 

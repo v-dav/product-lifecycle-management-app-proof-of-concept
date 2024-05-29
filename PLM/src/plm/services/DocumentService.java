@@ -46,8 +46,8 @@ public class DocumentService {
 
             documentDao.create(nextDocumentIteration);
         } else {
-            logger.error(bundle.getString("error.cannotReserve"));
-            throw new IllegalArgumentException(bundle.getString("error.cannotReserve"));
+            logger.error(bundle.getString("error.DocumentCannotReserve"));
+            throw new IllegalArgumentException(bundle.getString("error.DocumentCannotReserve"));
         }
     }
 
@@ -71,8 +71,8 @@ public class DocumentService {
 
             documentDao.update(document);
         } else {
-            logger.error(bundle.getString("error.cannotUpdate"));
-            throw new IllegalArgumentException(bundle.getString("error.cannotUpdate"));
+            logger.error(bundle.getString("error.DocumentCannotUpdate"));
+            throw new IllegalArgumentException(bundle.getString("error.DocumentCannotUpdate"));
         }
     }
 
@@ -93,8 +93,8 @@ public class DocumentService {
 
             documentDao.update(document);
         } else {
-            logger.error(bundle.getString("error.cannotFree"));
-            throw new IllegalArgumentException(bundle.getString("error.cannotFree"));
+            logger.error(bundle.getString("error.DocumentCannotFree"));
+            throw new IllegalArgumentException(bundle.getString("error.DocumentCannotFree"));
         }
     }
 
@@ -116,8 +116,8 @@ public class DocumentService {
 
             documentDao.update(document);
         } else {
-            logger.error(bundle.getString("error.cannotSetState"));
-            throw new IllegalArgumentException(bundle.getString("error.cannotSetState"));
+            logger.error(bundle.getString("error.DocumentCannotSetState"));
+            throw new IllegalArgumentException(bundle.getString("error.DocumentCannotSetState"));
         }
     }
 
@@ -147,8 +147,8 @@ public class DocumentService {
 
             documentDao.create(nextDocumentVersion);
         } else {
-            logger.error(bundle.getString("error.cannotRevise"));
-            throw new IllegalArgumentException(bundle.getString("error.cannotRevise"));
+            logger.error(bundle.getString("error.DocumentCannotRevise"));
+            throw new IllegalArgumentException(bundle.getString("error.DocumentCannotRevise"));
         }
     }
 }
