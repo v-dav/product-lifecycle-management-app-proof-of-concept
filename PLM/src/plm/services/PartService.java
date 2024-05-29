@@ -2,6 +2,7 @@ package plm.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import plm.dao.DocumentDao;
@@ -13,8 +14,12 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+/**
+ * Service class for managing Part entities in the Product Lifecycle Management (PLM) system.
+ * Implements the Service interface to provide CRUD operations and lifecycle management for parts.
+ */
 @Service
-public class PartService {
+public class PartService implements plm.services.Service {
 
     @Autowired
     private PartDao partDao;
@@ -27,19 +32,15 @@ public class PartService {
             Locale.ENGLISH);
 
     /**
-     * Reserves a Part entity and creates a new iteration.
-     *
-     * @param userId    The user ID making the request.
-     * @param reference The reference of the part.
-     * @param version   The version of the part.
-     * @param iteration The iteration of the part.
+     * {@inheritDoc}
      */
+    @Override
     public void reserve(String userId, String reference, String version, int iteration) {
         Part part = partDao.get(reference, version, iteration);
 
         if (!part.isReserved() && !part.getLifeCycleTemplate().isFinal(part.getLifeCycleState())) {
-            Part nextPartIteration = new Part(part.getReference(),
-                    part.getVersion(), iteration + 1);
+            Part nextPartIteration = new Part(part.getReference(), part.getVersion(),
+                    iteration + 1);
 
             nextPartIteration.setReserved(true)
                     .setReservedBy(userId)
@@ -76,15 +77,9 @@ public class PartService {
     }
 
     /**
-     * Updates a Part entity's attributes if it is reserved by the given user.
-     *
-     * @param userId         The user ID making the request.
-     * @param reference      The reference of the part.
-     * @param version        The version of the part.
-     * @param iteration      The iteration of the part.
-     * @param partAttribute1 The first attribute of the part.
-     * @param partAttribute2 The second attribute of the part.
+     * {@inheritDoc}
      */
+    @Override
     public void update(String userId, String reference, String version,
                        int iteration, String partAttribute1, String partAttribute2) {
         Part part = partDao.get(reference, version, iteration);
@@ -100,13 +95,9 @@ public class PartService {
     }
 
     /**
-     * Frees a reserved Part entity and updates linked documents accordingly.
-     *
-     * @param userId    The user ID making the request.
-     * @param reference The reference of the part.
-     * @param version   The version of the part.
-     * @param iteration The iteration of the part.
+     * {@inheritDoc}
      */
+    @Override
     public void free(String userId, String reference, String version, int iteration) {
         Part part = partDao.get(reference, version, iteration);
 
@@ -125,14 +116,9 @@ public class PartService {
     }
 
     /**
-     * Sets the state of a Part entity if it is not reserved.
-     *
-     * @param userId    The user ID making the request.
-     * @param reference The reference of the part.
-     * @param version   The version of the part.
-     * @param iteration The iteration of the part.
-     * @param state     The new state of the part.
+     * {@inheritDoc}
      */
+    @Override
     public void setState(String userId, String reference, String version,
                          int iteration, String state) {
         Part part = partDao.get(reference, version, iteration);
@@ -152,13 +138,9 @@ public class PartService {
     }
 
     /**
-     * Revises a Part entity by creating a new version.
-     *
-     * @param userId    The user ID making the request.
-     * @param reference The reference of the part.
-     * @param version   The version of the part.
-     * @param iteration The iteration of the part.
+     * {@inheritDoc}
      */
+    @Override
     public void revise(String userId, String reference, String version, int iteration) {
         Part part = partDao.get(reference, version, iteration);
 
@@ -200,6 +182,12 @@ public class PartService {
         }
     }
 
+    /**
+     * Retrieves the set of documents linked to a given Part entity.
+     *
+     * @param part The part entity for which to retrieve linked documents.
+     * @return A set of documents linked to the specified part.
+     */
     private Set<Document> getLinkedDocuments(Part part) {
         // Implementation and returned value are not relevant for this exercise
         return null;
