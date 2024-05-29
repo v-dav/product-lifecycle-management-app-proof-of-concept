@@ -11,12 +11,7 @@ import plm.model.Document;
 public class DocumentDao extends AbstractDao {
 
 	/**
-	 * Retrieves a Document entity based on its reference, version, and iteration.
-	 *
-	 * @param reference The reference of the document.
-	 * @param version The version of the document.
-	 * @param iteration The iteration of the document.
-	 * @return The Document entity.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Document get(String reference, String version, int iteration) {

@@ -5,28 +5,25 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-// Abstract Data Access Object (DAO) class providing common CRUD operations.
+/**
+ * Abstract Data Access Object (DAO) class providing common CRUD operations.
+ */
 @Transactional
-public abstract class AbstractDao {
+public abstract class AbstractDao implements Dao {
 
     @Autowired
     protected SessionFactory sessionFactory;
 
     /**
-     * Retrieves an entity based on its reference, version, and iteration.
-     *
-     * @param reference The reference of the entity.
-     * @param version   The version of the entity.
-     * @param iteration The iteration of the entity.
-     * @return The entity.
+     * {@inheritDoc}
      */
+    @Override
     public abstract Object get(String reference, String version, int iteration);
 
     /**
-     * Creates a new entity in the database.
-     *
-     * @param entity The entity to create.
+     * {@inheritDoc}
      */
+    @Override
     public void create(Object entity) {
         Session currentSession = sessionFactory.getCurrentSession();
         currentSession.save(entity);
@@ -34,10 +31,9 @@ public abstract class AbstractDao {
     }
 
     /**
-     * Updates the given entity in the database.
-     *
-     * @param entity The entity to update.
+     * {@inheritDoc}
      */
+    @Override
     public void update(Object entity) {
         Session currentSession = sessionFactory.getCurrentSession();
         currentSession.update(entity);

@@ -11,12 +11,7 @@ import plm.model.Part;
 public class PartDao extends AbstractDao {
 
 	/**
-	 * Retrieves a Part entity based on its reference, version, and iteration.
-	 *
-	 * @param reference The reference of the part.
-	 * @param version The version of the part.
-	 * @param iteration The iteration of the part.
-	 * @return The Part entity.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Part get(String reference, String version, int iteration) {
