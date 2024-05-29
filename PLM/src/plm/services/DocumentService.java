@@ -10,8 +10,13 @@ import plm.model.Document;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Service class for managing Document entities in the Product Lifecycle Management (PLM) system.
+ * Implements the Service interface to provide CRUD operations and lifecycle management
+ * for documents.
+ */
 @Service
-public class DocumentService {
+public class DocumentService implements plm.services.Service {
 
     @Autowired
     private DocumentDao documentDao;
@@ -21,13 +26,9 @@ public class DocumentService {
             Locale.ENGLISH);
 
     /**
-     * Reserves a Document entity and creates a new iteration.
-     *
-     * @param userId    The user ID making the request.
-     * @param reference The reference of the document.
-     * @param version   The version of the document.
-     * @param iteration The iteration of the document.
+     * {@inheritDoc}
      */
+    @Override
     public void reserve(String userId, String reference, String version, int iteration) {
         Document document = documentDao.get(reference, version, iteration);
 
@@ -54,15 +55,9 @@ public class DocumentService {
     }
 
     /**
-     * Updates a Document entity's attributes if it is reserved by the given user.
-     *
-     * @param userId             The user ID making the request.
-     * @param reference          The reference of the document.
-     * @param version            The version of the document.
-     * @param iteration          The iteration of the document.
-     * @param documentAttribute1 The first attribute of the document.
-     * @param documentAttribute2 The second attribute of the document.
+     * {@inheritDoc}
      */
+    @Override
     public void update(String userId, String reference, String version, int iteration,
                        String documentAttribute1, String documentAttribute2) {
         Document document = documentDao.get(reference, version, iteration);
@@ -79,13 +74,9 @@ public class DocumentService {
     }
 
     /**
-     * Frees a reserved Document entity.
-     *
-     * @param userId    The user ID making the request.
-     * @param reference The reference of the document.
-     * @param version   The version of the document.
-     * @param iteration The iteration of the document.
+     * {@inheritDoc}
      */
+    @Override
     public void free(String userId, String reference, String version, int iteration) {
         Document document = documentDao.get(reference, version, iteration);
 
@@ -99,14 +90,9 @@ public class DocumentService {
     }
 
     /**
-     * Sets the state of a Document entity if it is not reserved.
-     *
-     * @param userId    The user ID making the request.
-     * @param reference The reference of the document.
-     * @param version   The version of the document.
-     * @param iteration The iteration of the document.
-     * @param state     The new state of the document.
+     * {@inheritDoc}
      */
+    @Override
     public void setState(String userId, String reference, String version,
                          int iteration, String state) {
         Document document = documentDao.get(reference, version, iteration);
@@ -121,13 +107,9 @@ public class DocumentService {
     }
 
     /**
-     * Revises a Document entity by creating a new version.
-     *
-     * @param userId    The user ID making the request.
-     * @param reference The reference of the document.
-     * @param version   The version of the document.
-     * @param iteration The iteration of the document.
+     * {@inheritDoc}
      */
+    @Override
     public void revise(String userId, String reference, String version, int iteration) {
         Document document = documentDao.get(reference, version, iteration);
 
