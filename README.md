@@ -54,21 +54,7 @@
 	- Detailed explanation of each expected improvement.
 	- Includes architectural decisions and rationale for changes.
 
-
-
-
-
-# Improvements
-
-|   | Expected  | Concept | Implementation                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|---|---|---|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 1 | Data Integrity | Data associated with parts and their related entities remain accurate and consistent.  | <ul><li> Validate changes to parts before saving, ensuring all linked documents are updated accordingly. </li></ul>                                                                                                                                                                                                                                                                                                                                   |
-| 2 | Handling Data Quality Bugs |  Address common issues where data quality bugs occur, often in non-reproducible ways outside of production. | <ul><li>Simplify error handling and logging mechanisms to capture data quality issues effectively. </li></ul>                                                                                                                                                                                                                                                                                                                                         |
-| 3 | Performance Optimization | Enhance performance (time and memory) while keeping the code simple, without compromising readability and maintainability.  | <ul><li>Focus on optimizing database queries and minimizing unnecessary processing.</li></ul>                                                                                                                                                                                                                                                                                                                                                         |
-| 4 | Global Customer Base |  Ensure the system supports users from around the world. | <ul><li>Implement localization and internationalization best practices.</li></ul>                                                                                                                                                                                                                                                                                                                                                                     |
-| 5 | Future Entity Additions |  Make the system adaptable to future changes, such as adding new entity types (other than Part and Document) with different behaviors (other than reservation, life cycle, versioning) | <ul><li>Implement Object-Oriented Principles</li><li>Use interfaces and abstract classes to allow easy integration of new entities without major code changes.</li><li>Use inheritance and polymorphism to manage parts and their relationships.</li><li>Create base classes and interfaces for common behaviors.</li><li>Use design patterns like Factory, Singleton, and Observer.</li></ul>                                                        |
-| 6 | Service Reusability |  Make services offered by the solution reusable, flexible, maintainable and customizable for other developers. | <ul><li>Create small modular reusable service components with well-defined public APIs and single responsability.</li><li>Documentation: Adding comments improves the understandability and maintainability of the code, which is beneficial for other developers who might customize the solution. Readability: Clean and well-structured code enhances readability, making it easier for developers to work with and reuse the services..</li></ul> |
-
+      
 
 # Expected Improvements
 
@@ -94,6 +80,30 @@
        - Ensured proper SLF4J logging with a simple logging backend.
        - Configured and tested logging in the Part class and Main test class.
    - **Argumentation**: used a logging framework SLF4J to log important events and errors to ensure that exceptions are caught and logged properly. Ensuring that exceptions are caught and logged properly. Si I imported SLF4J for logging and added logging statements in setters to log errors when invalid data is attempted to be set, before throwing exceptions. I added also slf4j-simple dependancy to handle this. By default, the logging output will be directed to the console (standard output), not a file. If we want to log messages to a file, we will need to use a logging framework that supports file logging, such as Logback or Log4J.
+   <br></br>
+3. **Performances**:
+   - Kept code **clean, simple, readable and maintainable**
+   - Avoid **redundant** validations
+     <br></br>
+4. **Future Entity Additions:**
+   - Defined an **Interfaces** that define common behaviours
+   - Created an **Abstract Base Classes** that implements the interface and provides common properties and methods.
+   - Extended ****the **Base Class in Specific Entities, Services, Dao and Controllers**: Modified existing classes to extend the base classes, ensuring they inherit the common behaviors and keep proper individual behaviours and fields.
+   - Established **Parent-Child** relationships between parts
+   - **Argumentation**: To address the requirement of adding new entities with similar behaviors but not necessarily all of them, we can use **inheritance** and **interfaces** to create a flexible and reusable design. This approach allows us to define common behaviors in a base class or interface and then extend or implement them in specific entities making the system adaptable to future changes
+     <br></br>
+5. **Global Customer Base:**
+   - **Resource Bundle Usage**: All messages are fetched from the external resource bundles to support multiple languages (e.g., .properties files). They are in src/resources folder.
+   - **Localized Error and Logger Messages**: Both validation error messages and logger error messages are localized, meaning that they are displayed in the appropriate language based on the user’s locale. If we change `Locale.FRENCH` or Locale.ENGLISH we will have the logged messages and errors in FRENCH or ENGLISH.
+   - **Argumentation**: We need to ensure that our application is designed with internationalization (i18n) and localization (l10n) in mind. This means our application should support multiple languages and regional formats, and be flexible enough to adapt to various cultural contexts.
+     <br></br>
+6. **Service Integration and Reusability:**
+    - **Added Detailed JavaDoc Comments**: Added comprehensive JavaDoc comments for the classes and each method, providing clear explanations of their purpose and usage. This documentation helps other developers understand the code’s functionality and how to integrate and extend it.
+    - - Using Object-Oriented Programming **Inheritance** and **Interface** concepts with following benefits:
+      - **Reusability**: New entities can extend AbstractEntity to inherit common behaviors, reducing code duplication.
+      - **Flexibility**: Entities can override methods from the base class to provide specific implementations if needed.
+      - **Maintainability**: Centralizing common behaviors in a base class makes the code easier to maintain and extend.
+      
 # Not Expected and Not Implemented Improvements
 
 1. **User Management**: No implementation details for user creation and login mechanisms.
@@ -101,6 +111,24 @@
 3. **Spring Configuration**: Data sources, Hibernate settings and Spring configuration should remain unchanged.
 4. **REST Services Input/Output**: Current controller methods and input/output signature should remain unchanged.
 5. **Build Tools**: No Maven or Gradle integration or setup required.
+
+# Notes
+
+- In the zip file you’ll find all the initial folders. Although the most of modifications is in src/ files, I include here also:
+    - **resource/** folder with bundles for internationalization,
+    - **lib/** folder with 3 additional dependancies for logging and validation annotations
+        - hibernate-validator-8.0.1.Final.jar
+        - slf4j-simple-1.7.30.jar
+        - validation-api-2.0.1.Final.jar
+    - **src/test/Main.java** file: file that allowed me to test locally implemented improvements to the POC. I compiled and executed as follows:
+
+  ```javac -cp lib/hibernate-commons-annotations-5.1.0.Final.jar:lib/hibernate-validator-8.0.1.Final.jar:lib/validation-api-2.0.1.Final.jar:lib/hibernate-core-5.3.7.Final.jar:lib/hibernate-jpa-2.1-api-1.0.2.Final.jar:lib/slf4j-api-1.7.28.jar:lib/spring-beans-5.1.7.RELEASE.jar:lib/spring-boot-2.1.5.RELEASE.jar:lib/spring-boot-autoconfigure-2.1.5.RELEASE.jar:lib/spring-context-5.1.7.RELEASE.jar:lib/spring-core-5.1.7.RELEASE.jar:lib/spring-security-web-5.1.5.RELEASE.jar:lib/spring-tx-5.1.7.RELEASE.jar:lib/spring-web-5.1.7.RELEASE.jar:lib/spring-webmvc-5.1.7.RELEASE.jar:lib/slf4j-simple-1.7.30.jar:resources -d bin src/plm/model/*.java src/plm/test/Main.java```
+  <br></br>
+  ```java -cp lib/hibernate-commons-annotations-5.1.0.Final.jar:lib/hibernate-validator-8.0.1.Final.jar:lib/validation-api-2.0.1.Final.jar:lib/hibernate-core-5.3.7.Final.jar:lib/hibernate-jpa-2.1-api-1.0.2.Final.jar:lib/slf4j-api-1.7.28.jar:lib/spring-beans-5.1.7.RELEASE.jar:lib/spring-boot-2.1.5.RELEASE.jar:lib/spring-boot-autoconfigure-2.1.5.RELEASE.jar:lib/spring-context-5.1.7.RELEASE.jar:lib/spring-core-5.1.7.RELEASE.jar:lib/spring-security-web-5.1.5.RELEASE.jar:lib/spring-tx-5.1.7.RELEASE.jar:lib/spring-web-5.1.7.RELEASE.jar:lib/spring-webmvc-5.1.7.RELEASE.jar:lib/slf4j-simple-1.7.30.jar:resources:bin plm.test.Main```
+  <br></br>
+- Inheritance and Interfaces are used for Entities, Services, Controllers and Dao in case of new Entities (other than Part and Documents) are added in the future which implies that each new Entity will have it’s own Controller, Service and Dao. It allows better modularity and feature extensions and consistency.
+- I noticed that API endpoint for **setState** method in **Controllers** was **“/Part/free”,** same as for **free** method. Since the requirement was that current controller methods and input/output signature should remain unchanged, I left it as is.
+- All the logic rules are respected
 
 # Author
 [Vladimir Davidov ](https://github.com/v-dav)
