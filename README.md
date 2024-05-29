@@ -88,7 +88,7 @@
 4. **Future Entity Additions:**
    - Defined an **Interfaces** that define common behaviours
    - Created an **Abstract Base Classes** that implements the interface and provides common properties and methods.
-   - Extended ****the **Base Class in Specific Entities, Services, Dao and Controllers**: Modified existing classes to extend the base classes, ensuring they inherit the common behaviors and keep proper individual behaviours and fields.
+   - Extended the **Base Class in Specific Entities, Services, Dao and Controllers**: Modified existing classes to extend the base classes, ensuring they inherit the common behaviors and keep proper individual behaviours and fields.
    - Established **Parent-Child** relationships between parts
    - **Argumentation**: To address the requirement of adding new entities with similar behaviors but not necessarily all of them, we can use **inheritance** and **interfaces** to create a flexible and reusable design. This approach allows us to define common behaviors in a base class or interface and then extend or implement them in specific entities making the system adaptable to future changes
      <br></br>
