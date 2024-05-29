@@ -70,6 +70,30 @@
 | 6 | Service Reusability |  Make services offered by the solution reusable, flexible, maintainable and customizable for other developers. | <ul><li>Create small modular reusable service components with well-defined public APIs and single responsability.</li><li>Documentation: Adding comments improves the understandability and maintainability of the code, which is beneficial for other developers who might customize the solution. Readability: Clean and well-structured code enhances readability, making it easier for developers to work with and reuse the services..</li></ul> |
 
 
+# Expected Improvements
+
+1. **Data Integrity:** Data integrity is essential (this includes entity and their related entities)
+2. **Handling Data Quality Bugs and Issues:** Despite this, bugs related to data quality is very common (i.e. often bugs are not reproducible outside of the PROD)
+3. **Performances**: must be optimals but this no real time software (i.e. code simplicity > micro optimisation)
+4. **Future Entity Additions:** Some new entities will be added soon, different than Part and Document but with the same behaviors but NOT necessarily all of them (i.e. rÈservation/life cycle/versionning)
+5. **Global Customer Base:** We have customers all arround the world, and so are their users too
+6. **Service Reusability:** Integration (i.e. solution customisation to fit customer specific needs) maybe done will by others companies. Services offered by the solution must be easy to reuse for developpers.
+
+# Implemented Improvements
+
+1. **Ensuring Data Integrity:**
+   - Added **validation annotations** (@NotBlank, @Min) to enforce constraints at the **field** level.
+   - Implemented **validation logic** in the **setters** to prevent setting invalid values (null or empty strings or null objects).
+   - **Argumentation**: added validation annotations to enforce constraints on the fields, using the Java Bean Validation (JSR 380) annotations provided by Hibernate Validator (which is included in Spring Boot).  @NotBlank on reference and version to ensure these fields are not blank. @Min on iteration to ensure it is a positive integer. These annotations help ensure that the data being persisted conforms to certain rules, thereby maintaining data integrity. Each setter that takes a reference type argument (including String) checks if it’s not null or contains only whitespaces in case of strings and throws an **IllegalArgumentException** if it is. This **validation logic** ensures that encapsulated private fields cannot be set to invalid values even after the object is created. Added hibernate-validator and validation-api to the dependancies to handle @NotBlank and Min.
+   <br></br>
+2. **Handling Data Quality Bugs and Issues:**
+   - **Exception Handling**
+       - Added validation and exception handling in setter methods.
+       - Used SLF4J to log errors when invalid values are set.
+   - **Logging: Added SLF4J and SLF4J Simple Implementation**:
+       - Ensured proper SLF4J logging with a simple logging backend.
+       - Configured and tested logging in the Part class and Main test class.
+   - **Argumentation**: used a logging framework SLF4J to log important events and errors to ensure that exceptions are caught and logged properly. Ensuring that exceptions are caught and logged properly. Si I imported SLF4J for logging and added logging statements in setters to log errors when invalid data is attempted to be set, before throwing exceptions. I added also slf4j-simple dependancy to handle this. By default, the logging output will be directed to the console (standard output), not a file. If we want to log messages to a file, we will need to use a logging framework that supports file logging, such as Logback or Log4J.
 # Not Expected and Not Implemented Improvements
 
 1. **User Management**: No implementation details for user creation and login mechanisms.
