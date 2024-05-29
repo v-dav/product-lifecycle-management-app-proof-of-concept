@@ -2,7 +2,7 @@
 
 **A Proof of Concept (POC)** is typically a small project created to test whether a certain idea or approach is feasible. It’s not intended to be a final product but rather a prototype to demonstrate and validate key concepts and functionalities. Here applied to a **Product Lifecycle Management (PLM)** software editor: collaborative product design solution (satellites, aircraft, car, clothing, robots, ...). Product conception requires to manage its data.
 
-# Business
+# Business logic
 - **Part:** represents a physical element or set of physical elements. For instance, a car (product) is composed, among others, of 4 wheels (4 occurrences of the Part "Wheel"). The wheel it self is composed by 1 wheel rim (1 occurrence of the Part "Rim"), 1 tyre (1 occurrence of the Part "Tyre") and X nuts (X occurrences of the Part "Nuts")
   <br></br>
 - **Document:** represents the documentation (Studies, business requirements, tests, maintenance, ...). A Document can be linked to a Part, in such case both share the same life cycle template and all actions applied to the part is automatically applied to all linked documents 
