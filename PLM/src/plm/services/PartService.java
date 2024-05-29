@@ -23,7 +23,8 @@ public class PartService {
     private DocumentDao documentDao;
 
     private static final Logger logger = LoggerFactory.getLogger(PartService.class);
-    private static final ResourceBundle bundle = ResourceBundle.getBundle("messages", Locale.ENGLISH);
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("messages",
+            Locale.ENGLISH);
 
     /**
      * Reserves a Part entity and creates a new iteration.
@@ -37,7 +38,8 @@ public class PartService {
         Part part = partDao.get(reference, version, iteration);
 
         if (!part.isReserved() && !part.getLifeCycleTemplate().isFinal(part.getLifeCycleState())) {
-            Part nextPartIteration = new Part(part.getReference(), part.getVersion(), iteration + 1);
+            Part nextPartIteration = new Part(part.getReference(),
+                    part.getVersion(), iteration + 1);
 
             nextPartIteration.setReserved(true)
                     .setReservedBy(userId)
@@ -50,7 +52,8 @@ public class PartService {
             partDao.create(nextPartIteration);
 
             for (Document document : getLinkedDocuments(part)) {
-                Document nextIteration = new Document(document.getReference(), document.getVersion(), iteration + 1);
+                Document nextIteration = new Document(document.getReference(),
+                        document.getVersion(), iteration + 1);
 
                 nextIteration.setReserved(true)
                         .setReservedBy(userId)
@@ -78,12 +81,12 @@ public class PartService {
      * @param partAttribute1 The first attribute of the part.
      * @param partAttribute2 The second attribute of the part.
      */
-    public void update(String userId, String reference, String version, int iteration, String partAttribute1, String partAttribute2) {
+    public void update(String userId, String reference, String version,
+                       int iteration, String partAttribute1, String partAttribute2) {
         Part part = partDao.get(reference, version, iteration);
 
         if (part.isReserved() && part.getReservedBy().equals(userId)) {
-            part.setPartAttribute1(partAttribute1)
-                    .setPartAttribute2(partAttribute2);
+            part.setPartAttribute1(partAttribute1).setPartAttribute2(partAttribute2);
 
             partDao.update(part);
         } else {
@@ -130,7 +133,8 @@ public class PartService {
      * @param iteration The iteration of the part.
      * @param state     The new state of the part.
      */
-    public void setState(String userId, String reference, String version, int iteration, String state) {
+    public void setState(String userId, String reference, String version,
+                         int iteration, String state) {
         Part part = partDao.get(reference, version, iteration);
 
         if (!part.isReserved() && part.getLifeCycleTemplate().isKnown(state)) {
@@ -161,7 +165,8 @@ public class PartService {
         Part part = partDao.get(reference, version, iteration);
 
         if (!part.isReserved() && part.getLifeCycleTemplate().isFinal(part.getLifeCycleState())) {
-            Part nextPartVersion = new Part(part.getReference(), part.getVersionSchema().getNextVersionLabel(version), 1);
+            Part nextPartVersion = new Part(part.getReference(),
+                    part.getVersionSchema().getNextVersionLabel(version), 1);
 
             nextPartVersion.setReserved(false)
                     .setReservedBy(null)
@@ -174,7 +179,8 @@ public class PartService {
             partDao.create(nextPartVersion);
 
             for (Document document : getLinkedDocuments(part)) {
-                Document nextDocumentVersion = new Document(document.getReference(), document.getVersionSchema().getNextVersionLabel(version), 1);
+                Document nextDocumentVersion = new Document(document.getReference(),
+                        document.getVersionSchema().getNextVersionLabel(version), 1);
 
                 nextDocumentVersion.setReserved(false)
                         .setReservedBy(null)

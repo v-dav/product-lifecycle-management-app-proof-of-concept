@@ -17,7 +17,8 @@ public class DocumentService {
     private DocumentDao documentDao;
 
     private static final Logger logger = LoggerFactory.getLogger(DocumentService.class);
-    private static final ResourceBundle bundle = ResourceBundle.getBundle("messages", Locale.ENGLISH);
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("messages",
+            Locale.ENGLISH);
 
     /**
      * Reserves a Document entity and creates a new iteration.
@@ -30,8 +31,10 @@ public class DocumentService {
     public void reserve(String userId, String reference, String version, int iteration) {
         Document document = documentDao.get(reference, version, iteration);
 
-        if (!document.isReserved() && !document.getLifeCycleTemplate().isFinal(document.getLifeCycleState())) {
-            Document nextDocumentIteration = new Document(document.getReference(), document.getVersion(), iteration + 1);
+        if (!document.isReserved() &&
+                !document.getLifeCycleTemplate().isFinal(document.getLifeCycleState())) {
+            Document nextDocumentIteration = new Document(document.getReference(),
+                    document.getVersion(), iteration + 1);
 
             nextDocumentIteration.setReserved(true)
                     .setReservedBy(userId)
@@ -58,7 +61,8 @@ public class DocumentService {
      * @param documentAttribute1 The first attribute of the document.
      * @param documentAttribute2 The second attribute of the document.
      */
-    public void update(String userId, String reference, String version, int iteration, String documentAttribute1, String documentAttribute2) {
+    public void update(String userId, String reference, String version, int iteration,
+                       String documentAttribute1, String documentAttribute2) {
         Document document = documentDao.get(reference, version, iteration);
 
         if (document.isReserved() && document.getReservedBy().equals(userId)) {
@@ -103,7 +107,8 @@ public class DocumentService {
      * @param iteration The iteration of the document.
      * @param state     The new state of the document.
      */
-    public void setState(String userId, String reference, String version, int iteration, String state) {
+    public void setState(String userId, String reference, String version,
+                         int iteration, String state) {
         Document document = documentDao.get(reference, version, iteration);
 
         if (!document.isReserved() && document.getLifeCycleTemplate().isKnown(state)) {
@@ -127,8 +132,10 @@ public class DocumentService {
     public void revise(String userId, String reference, String version, int iteration) {
         Document document = documentDao.get(reference, version, iteration);
 
-        if (!document.isReserved() && document.getLifeCycleTemplate().isFinal(document.getLifeCycleState())) {
-            Document nextDocumentVersion = new Document(document.getReference(), document.getVersionSchema().getNextVersionLabel(version), 1);
+        if (!document.isReserved() &&
+                document.getLifeCycleTemplate().isFinal(document.getLifeCycleState())) {
+            Document nextDocumentVersion = new Document(document.getReference(),
+                    document.getVersionSchema().getNextVersionLabel(version), 1);
 
             nextDocumentVersion.setReserved(false)
                     .setReservedBy(null)
