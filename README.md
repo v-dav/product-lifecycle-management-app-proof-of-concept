@@ -1,5 +1,8 @@
 # Context
 
+![image](https://github.com/user-attachments/assets/0becb34c-adb3-4b48-9ebe-b2efde34832d)
+
+
 **A Proof of Concept (POC)** is typically a small project created to test whether a certain idea or approach is feasible. It’s not intended to be a final product but rather a prototype to demonstrate and validate key concepts and functionalities. Here applied to a **Product Lifecycle Management (PLM)** software editor: collaborative product design solution (satellites, aircraft, car, clothing, robots, ...). Product conception requires to manage its data.
 
 # Business logic
