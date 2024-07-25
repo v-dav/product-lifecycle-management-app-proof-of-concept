@@ -113,7 +113,7 @@
 
 # Notes
 
-- In the zip file you’ll find all the initial folders. Although the most of modifications is in src/ files, I include here also:
+- Also included:
     - **resource/** folder with bundles for internationalization,
     - **lib/** folder with 3 additional dependancies for logging and validation annotations
         - hibernate-validator-8.0.1.Final.jar
